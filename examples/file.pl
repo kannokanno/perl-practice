@@ -1,12 +1,13 @@
 use strict;
 use warnings;
+use File::Slurp;
 use v5.12;
 
 # example
 # see more 'perldoc -f -X'
 sub size { -s shift; }
 
-sub example_read_by_open {
+sub read_by_open {
     my $filename = shift;
     open my ($fh), '<', $filename or die;
 
@@ -19,6 +20,20 @@ sub example_read_by_open {
     close $fh;
 }
 
-my $script_name = $0;
+sub read_by_open_and_fast {
+    my $filename = shift;
+    local $/;
+    open my ($fh), '<', $filename or die;
+    <$fh>;
+}
 
-example_read_by_open $script_name;
+# use File::Slurp;
+sub read_by_slurp {
+    my $filename = shift;
+    # $contents = read_file($filename);
+    # @lines    = read_file($filename);
+    read_file($filename);
+}
+
+my $script_name = $0;
+say read_by_slurp  $script_name;
